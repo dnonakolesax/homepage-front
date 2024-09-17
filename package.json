@@ -1,0 +1,37 @@
+{
+  "name": "dnk33-homepage",
+  "version": "1.0.0",
+  "description": "dnk33's homepage",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "webpack serve --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnonakolesax/homepage-front.git"
+  },
+  "author": "domnakolesax",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dnonakolesax/homepage-front/issues"
+  },
+  "homepage": "https://github.com/dnonakolesax/homepage-front#readme",
+  "devDependencies": {
+    "favicons-webpack-plugin": "^6.0.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "handlebars-loader": "^1.7.3",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.78.0",
+    "sass-loader": "^16.0.1",
+    "style-loader": "^4.0.0"
+  }
+}
