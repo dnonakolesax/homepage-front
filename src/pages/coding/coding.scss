@@ -1,0 +1,203 @@
+#coding, #texting {
+  width: 97.5%;
+  background-color: #1e1e1e
+}
+
+button {
+  background-color: #1e1e1e;
+  margin-left: 8px;
+  border: 1px solid lightgreen;
+  width: 35px;
+  height: fit-content;
+  border-radius: 10px;
+  color: lightgreen;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px  ;
+}
+iframe#webpack-dev-server-client-overlay{display:none!important}
+
+ul {
+  padding-left: 10px;
+}
+
+.dir-list {
+  margin-top: 2px;
+  margin-left: 20px;
+}
+
+#texting-wrap {
+  display: inline-grid;
+  grid-template-columns: 97.5% 20px;
+  border: 1px solid white;
+  margin-top: 5px;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  width: 97.5%;
+}
+
+.file-by {
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 22px;
+  color: white;
+}
+
+.ava-au {
+  height: 22px;
+  margin-right: 5px;
+  margin-bottom: -5px;
+  border: 0 solid;
+  border-radius: 12px;
+}
+
+.nickname{
+  color: gray;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#coding-wrap{
+  display: inline-grid;
+  grid-template-columns: 97.5% 20px;
+  border: 1px solid white;
+  width: 97.5%;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+}
+
+#coding {
+  height: fit-content;
+  width: 97.5%;
+}
+
+.ava-ft {
+  height: 30px;
+  border: 0 solid;
+  border-radius: 12px;
+}
+
+.settings {
+  margin-left: -10px;
+  font-size: 22px !important;
+  background-color: #1e1e1e;
+  width: 35px;
+  height: fit-content;
+  color: lightgreen;
+  cursor: pointer;
+}
+
+
+
+body {
+  overflow-x: hidden; /* Hide scrollbars */
+}
+
+#texting{
+  color: white;
+  margin-top: -20px;
+}
+
+.blink {
+  animation-name: blinker;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.1,0.1,0.1,0.1);
+  animation-duration: 0.001s;
+  -webkit-animation-name: blinker;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+  -webkit-animation-duration: 0.8s;
+}
+
+
+
+.grid {
+  height: calc(96vh - 4px);
+  display: inline-grid;
+  gap: 10px;
+  grid-template-columns: 15% 85%
+}
+
+.code {
+  margin-top: 5px;
+}
+
+.goifile {
+  list-style-type: "📃";
+  cursor: pointer;
+  margin-top: 5px;
+  background-color: blue;
+  width: fit-content;
+}
+
+.dir {
+  list-style-type: "📁";
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.list {
+  margin-top: 5px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 14px;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-variation-settings: normal;
+  line-height: 19px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 12px;
+  height: available;
+}
+
+@keyframes blinker {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+
+@-webkit-keyframes blinker {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+
+.output {
+}
+
+.monaco-remote-cursor {
+  background-color: blue;
+  color: white;
+  border: 0.5px solid white;
+  height: 18px;
+  margin-left: 50px;
+  position: absolute;
+  pointer-events: none;
+  z-index: 4000;
+  width: 0;
+}
+
+.monaco-remote-cursor:before {
+  content: "\00a0 domnakolesax \00a0";
+  width: 99px;
+  height: 19px;
+  display: block;
+  margin-left: 5px;
+  margin-top: -10px;
+  z-index: 4000;
+  background: inherit;
+}
+
+#test {
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 14px;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-variation-settings: normal;
+  line-height: 19px;
+  letter-spacing: 0;
+  width: fit-content !important;
+  visibility: hidden;
+}

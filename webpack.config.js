@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const webpack = require('webpack');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = [
     {
@@ -9,7 +10,7 @@ module.exports = [
         context: path.resolve(__dirname, 'src'),
         entry: './index.js',
         devServer: {
-            port: 8000,
+            port: 7676,
             historyApiFallback: true,
             hot: true,
         },
@@ -62,13 +63,23 @@ module.exports = [
                     }
                 },
                 {
-                    test: /\.(css|scss)$/,
+                    test: /\.scss$/,
                     exclude: /node_modules/,
                     use: [
                         'style-loader',
                         'css-loader',
                         'postcss-loader',
                         'sass-loader'],
+                },
+                {
+                    test: /\.css$/,
+                    use: [
+                        'style-loader',
+                        'css-loader',],
+                },
+                {
+                    test: /\.ttf$/,
+                    use: ['file-loader']
                 }
             ]
         },
@@ -90,7 +101,8 @@ module.exports = [
         },
         plugins: [
             new HtmlWebpackPlugin({template: './index.html'}),
-            new FaviconsWebpackPlugin('../favicon.ico')
+            new FaviconsWebpackPlugin('../favicon.ico'),
+            new MonacoWebpackPlugin()
         ],
     },
 ]

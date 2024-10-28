@@ -1,0 +1,31 @@
+.footer-user {
+  display: flex;
+  justify-content: right;
+  font-size: 20px;
+  margin-right: 20px;
+  margin-top: -38px;
+}
+
+.footer-nick {
+  margin-left: 10px;
+  margin-top: 3px;
+  text-decoration: underline;
+}
+
+.navbar {
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 3.2vh;
+  background-color: blue;
+  width: 100%;
+  color: white;
+  text-align: center;
+  height: 4vh;
+  border: 1px solid black;
+}
+
+.ava-ft {
+  height: 30px;
+  border: 0 solid;
+  border-radius: 12px;
+}
