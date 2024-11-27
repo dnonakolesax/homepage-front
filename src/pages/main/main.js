@@ -2,21 +2,34 @@ import {} from '@pages/main/main.scss'
 import {ROOT_ELEMENT_ID} from "@configs/common_config";
 import mainTemplate from "@pages/main/main.hbs";
 import {Api} from "@modules/api";
-import {marked} from "marked";
+import coding from "@pages/coding/coding";
+import MD5 from "crypto-js/md5";
 import * as monaco from "monaco-editor";
 
-async function onDirClick(e) {
+let editorsCount = 0
+
+async function onDirClick(e, did) {
     const id = e.target.getAttribute("id")
+    if (did !== id) {
+        return
+    }
+    const path = e.target.getAttribute("path")
     const isOpened = e.target.getAttribute("opened")
     if (isOpened === 'y') {
         while (e.target.lastElementChild) {
             e.target.removeChild(e.target.lastElementChild);
         }
-        e.target.setAttribute("opened", false)
+        e.target.setAttribute("opened", "n")
+        return
     } else {
+       
+        let ul = document.createElement('ul')
+        e.target.appendChild(ul)
+        if (e.target.children.length !== 1) {
+            return
+        }
         const api = new Api();
         const dirList = await api.getDirs(id)
-        let ul = document.createElement('ul')
 
         const dirs = dirList.data
         dirs.forEach((dir) => {
@@ -25,120 +38,122 @@ async function onDirClick(e) {
             let cl = 'goifile'
             if (dir.dir === true) {
                 cl = 'dir'
-                li.addEventListener('click', (e) => onDirClick(e))
+                li.addEventListener('click', (e) => onDirClick(e, dir.fileId))
+                li.setAttribute("path", path + "/" + dir.name)
+                li.addEventListener('contextmenu', (e) => onDirRmb(e, dir.fileId))
             } else {
-                li.addEventListener('click', (e) => onFileClick(e))
+                li.addEventListener('click', (e) => onFileClick(e, dir.fileId))
+                li.setAttribute("path", path + "/" + dir.name.substr(0, dir.name.length-4))
+                li.addEventListener('contextmenu', (e) => onFileRmb(e, dir.fileId))
             }
             li.classList.add(cl)
             li.textContent = dir.name
             ul.appendChild(li)
         });
-        e.target.appendChild(ul)
         e.target.setAttribute("opened", 'y')
     }
 }
 
-async function onFileClick(e) {
+function resizeMonaco (e) {
+    const editorId = e.target.closest('.coding-wrap').getAttribute("editor-id")
+    const coding = document.getElementById(`coding-${editorId}`)
+    if ((e.key === 'Enter' ) || (e.key === 'Backspace')) {
+        const str = monaco.editor.getEditors()[Number(editorId)].getValue().toString()
+        let add = 2;
+        if (e.key === 'Backspace') {
+            add = 1;
+        }
+        const blocks = str.match(/[^\n]*\n[^\n]*/gi).length + add;
+        coding.style.height = (blocks*19).toString() + 'px';
+    }
+}
+
+async function onFileClick(e, did) {
     const id = e.target.getAttribute("id")
-    const api = new Api();
-    const blocks = await api.getBlocks(id)
-    const codeEl = document.getElementById('code')
-    codeEl.innerHTML = `<div class="file-by">
-            Sample text by <span class="nickname">
-            <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-au">dnonakolesax</span>;
-            <span class="access">Access: rwx; Access settings:</span>
-            <buton class="settings">⚙</buton>
-        </div>`
-    const blockList = blocks.data.blocks
-    console.log(blockList)
-    console.log(blockList.length)
-    for (let i = 0; i < blockList.length; i++) {
-        console.log(blockList[i].language)
-        if (blockList[i].language === 'md') {
-            const tw = document.createElement('div')
-            tw.classList.add("texting-wrap")
-            tw.innerHTML = `
-            <div id="texting" class="md-div"></div>
-            <div class="text-buttons">
-                <button id="tojik">🖊</button>
-                <button id="tojik2" style="display: none">done_md</button>
-                <button class="add_up">+↑</button>
-                <button class="add_down">+↓</button>
-            </div>
-          `
-            codeEl.appendChild(tw)
-            const html = await marked.parse(blockList[i].code);
-            let texting = document.getElementById('texting');
-            texting.innerHTML = html;
-            MathJax.typeset()
-            texting.style.height = 'fit-content'
-        } else if (blockList[i].language === 'go') {
-            const tw = document.createElement('div')
-            tw.classList.add("coding-wrap")
-            let id = 'coding-first'
-            if (i === 1) {
-                tw.innerHTML = `
-                <div id="coding-left">
-                    <div id="coding-first"></div>
-                    <div id="output-0" class="output"></div>
-                </div>
-                <div class="code-buttons">
-                    <button id="compile-first">▷</button>
-                    <button class="add_up">+↑</button>
-                    <button class="add_down">+↓</button>
-                </div>
-          `
-                codeEl.appendChild(tw)
-            } else if (i === 2) {
-                id = 'coding-second'
-                tw.innerHTML = `
-                <div id="coding-left">
-                    <div id="coding-second"></div>
-                    <div id="output-1" class="output"></div>
-                </div>
-                <div class="code-buttons">
-                    <button id="compile-second">▷</button>
-                    <button class="add_up">+↑</button>
-                    <button class="add_down">+↓</button>
-                </div>
-          `
-                codeEl.appendChild(tw)
-            }
+    if (did !== id) {
+        alert(did)
+        alert(id)
+        return
+    }
+    e.preventDefault()
+    const path = e.target.getAttribute("path")
+    window.router.redirect("files/" + path);
+}
 
-            let coding = document.getElementById(id);
+async function onDirRmb(e, did) {
+    const id = e.target.getAttribute("id")
+    if (did !== id) {
+        return
+    }
+    e.preventDefault()
+    const path = '/' + e.target.getAttribute("path")
 
-            let blocks = 6;
-            const heightPX = blocks * 19;;
-            coding.style.height = heightPX.toString() + 'px'
-            let editor = monaco.editor.create(document.getElementById(id), {
-                value: blockList[i].code,
-                language: 'go',
-                theme: 'vs-dark',
-                automaticLayout: true,
-                scrollBeyondLastLine: false,
-                autoIndent: "full",
-                overviewRulerBorder: false,
-                autoClosingBrackets: true,
-                tabSize: 4,
-                foldingStrategy: 'indentation',
-                readOnly: false,
-                minimap: {enabled: false},
-                scrollbar: {
-                    vertical: "hidden",
-                    handleMouseWheel: false,
-                    ignoreHorizontalScrollbarInContentHeight: true,
-                    verticalScrollbarSize: 0,
-                    verticalSliderSize: 0,
-                    horizontal: "hidden",
-                }
-            });
+    const create = document.getElementById('create')
+    create.style.display = 'inline'
+    let x = e.clientX;
+    let y = e.clientY;
+    create.style.left = `${x}px`;
+    create.style.top = `${y}px`;
+    document.getElementById('cfile').addEventListener('click', (e) => onCreateFile(e, path, id));
+    e.stopPropagation()
+}
+
+function uuidv4() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
+}
+
+async function onCreateFile (e, path, id) {
+    let result = prompt("Введите имя файла");
+    if (result.length < 3) {
+        alert ('Больше 3 символов надо')
+    } else {
+        result = result + '.goi'
+        const api = new Api()
+        await api.addFile(id, path, result)
+
+        let li = document.createElement('li')
+        //li.setAttribute("id", dir.fileId)
+        let cl = 'goifile'
+        li.addEventListener('click', (e) => onFileClick(e))
+        li.setAttribute("path", path + "/" + result)
+        //li.addEventListener('contextmenu', (e) => onFileRmb(e, dir.fileId))
+        li.classList.add(cl)
+        li.textContent = result
+        if (e.target.getAttribute("opened") === "y") {
+            e.target.appendChild(li)
         }
     }
 }
 
+async function onFileRmb(e) {
+    const id = e.target.parentNode.getAttribute("id")
+    e.preventDefault()
+    const paths = e.target.getAttribute("path").split('/')
+    let path = '/'
+    for (let i = 0; i < paths.length-1; i++) {
+        path += paths[i]
+    }
+    const create = document.getElementById('create')
+    create.style.display = 'inline'
+    let x = e.clientX;
+    let y = e.clientY;
+    create.style.left = `${x}px`;
+    document.getElementById('cfile').addEventListener('click', (e) => onCreateFile(e, path, id))
+    e.stopPropagation()
+}
+
 const main = async () => {
+    const pathSplit = window.location.href.split('/')
+    console.log(pathSplit)
+    let pathStr = ''
     const rootElement = document.querySelector(ROOT_ELEMENT_ID);
     rootElement.innerHTML = mainTemplate();
+    for (let i = 4; i < pathSplit.length; i++) {
+        pathStr += '/'
+        pathStr += pathSplit[i]
+    }
 
     const loadingElement = document.getElementById('loader')
     rootElement.style.visibility = 'hidden';
@@ -153,21 +168,33 @@ const main = async () => {
         let li = document.createElement('li')
         li.setAttribute("opened", 'n')
         li.setAttribute("id", dir.fileId)
+        li.setAttribute("path", dir.name)
         let cl = 'goifile'
         if (dir.dir === true) {
             cl = 'dir'
-            li.addEventListener('click', (e) => onDirClick(e))
+            li.addEventListener('click', (e) => onDirClick(e, dir.fileId))
+            li.addEventListener('contextmenu', (e) => onDirRmb(e, dir.fileId))
         } else {
             li.addEventListener('click', (e) => onFileClick(e))
+            li.addEventListener('contextmenu', (e) => onFileRmb(e, dir.fileId))
         }
         li.classList.add(cl)
         li.textContent = dir.name
         parentList.appendChild(li)
     })
 
+    if (pathStr != '') {
+        await coding(pathStr)
+    }
 
     rootElement.style.visibility = 'visible';
     loadingElement.style.display = 'none';
+    document.addEventListener('click', (e) => {
+        const create = document.getElementById('create')
+        if (create) {
+            create.style.display = 'none'
+        }
+    })
 }
 
 export default main;

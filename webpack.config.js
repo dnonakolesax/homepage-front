@@ -91,9 +91,26 @@ module.exports = [
                 '@partials': path.resolve(__dirname, 'src/partials'),
                 '@static': path.resolve(__dirname, 'static/'),
             },
+            fallback: {
+                "async_hooks": false,
+                "path": require.resolve("path-browserify"),
+                "zlib": require.resolve("browserify-zlib"),
+                "querystring": require.resolve("querystring-es3"),
+                "fs": false,
+                "stream": require.resolve("stream-browserify"),
+                "assert": require.resolve('assert'),
+                "util": require.resolve('util'),
+                // "crypto": require.resolve("crypto-browserify"),
+                // "http": require.resolve("stream-http"),
+                //"url": require.resolve("url/"),
+                // "net": require.resolve("net-browserify"),
+                // "process": require.resolve("process/browser"),
+                // "timers": require.resolve("timers-browserify")
+            }
         },
         output: {
             path: path.resolve(__dirname, 'dist/client'),
+            publicPath: '/',
             filename: 'index_bundle.js',
             environment: {
                 arrowFunction: false

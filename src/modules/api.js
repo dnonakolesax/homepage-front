@@ -157,26 +157,56 @@ export class Api extends Requests {
    * compile
    * @returns {Promise<{data: *, status: number}|{data: null, status: number}>} - результат запроса и статус
    */
-  async compile(code, fname) {
+  async compile(code, fname, kernelId) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://127.0.0.1:5004/uzbek';
-    return this.make_request(url, 'POST', {filename: fname, code: code});
+    const url = 'http://192.168.1.70:5004/uzbek';
+    return this.make_request(url, 'POST', {filename: fname, code: code, kernelId: kernelId});
   }
 
   async getCode(filename) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://127.0.0.1:5004/getcode';
+    const url = 'http://192.168.1.70:5004/getcode';
     return this.make_request(url, 'POST', {body: filename} );
   }
   async getDirs(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://127.0.0.1:5004/dirs';
+    const url = 'http://192.168.1.70:5004/dirs';
     return this.make_request(url, 'POST', {parent} );
   }
 
   async getBlocks(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://127.0.0.1:5004/blocks';
+    const url = 'http://192.168.1.70:5004/blocks';
     return this.make_request(url, 'POST', {parent} );
+  }
+
+  async getFileBlocks(path) {
+    const url = 'http://192.168.1.70:5004/blocks';
+    return this.make_request(url, 'POST', {path} );
+  }
+
+  async startKernel(id) {
+    const url = 'http://192.168.1.70:5004/kernel'
+    return this.make_request(url, 'POST', {id} );
+  }
+
+  async stopKernel(id) {
+    const url = 'http://192.168.1.70:5004/kernelstop'
+    return this.make_request(url, 'POST', {id} );
+  }
+  
+  async addBlock(id, order, block, lorder) {
+    const url = 'http://192.168.1.70:5004/addblock'
+    return this.make_request(url, 'POST', {"kernelId": id, "newOrder": order, "newBlocks": [block], "newLangs" : lorder} );
+  }
+  async addFile(id, path, name) {
+    const url = 'http://192.168.1.70:5004/addfile'
+    return this.make_request(url, 'POST', {"parentId": id, "name": name, "path": path} );
+  }
+
+  async abc() {
+    //const endpoint = restEndpoints.getDestination;
+    const url = 'http://192.168.1.70:3333/';
+    return this.make_request(url, 'GET');
   }
 }

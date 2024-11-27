@@ -1,49 +1,16 @@
-<div class="grid">
-    <div class="list">
-        <ul class="dir-list" id="dirlist">
-
-        </ul>
-    </div>
-    <div class="code">
-        <div class="file-by">
-            Sample text by <span class="nickname">
-            <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-au">dnonakolesax</span>;
+<div class="file-by">
+            {{this.fname}} by <span class="nickname">
+            <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-au">{{this.nickname}}</span>;
             <span class="access">Access: rwx; Access settings:</span>
-            <buton class="settings">⚙</buton>
-        </div>
-        <div id="texting-wrap">
-            <div id="texting" class="md-div"></div>
-            <div class="text-buttons">
-                <button id="tojik">🖊</button>
-                <button id="tojik2" style="display: none">done_md</button>
-                <button class="add_up">+↑</button>
-                <button class="add_down">+↓</button>
-            </div>
-        </div>
-        <div id="coding-wrap">
-            <div id="coding-left">
-                <div id="coding-first"></div>
-                <div id="output-0" class="output"></div>
-            </div>
-            <div class="code-buttons">
-                <button id="compile-first">▷</button>
-                <button class="add_up">+↑</button>
-                <button class="add_down">+↓</button>
-            </div>
-        </div>
-        <div id="coding-wrap">
-            <div id="coding-left">
-                <div id="coding-second"></div>
-                <div id="output-1" class="output"></div>
-            </div>
-            <div class="code-buttons">
-                <button id="compile-second">▷</button>
-                <button class="add_up">+↑</button>
-                <button class="add_down">+↓</button>
-            </div>
-        </div>
-        <div class="monaco-remote-cursor blink" id="kent-cursor" style="display: none"></div>
-        <script id="MathJax-script" async src="http://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-        <div id="test" class="view-line"></div>
-    </div>
+            <button>⚙</button>
+            <span class="access">Start kernel:</span>
+            <button id = "start-kernel" class="" style="border: none; margin-left: -5px; margin-top -10px;" >▷</button>
+            <button id = "kernel-started" style="display: none; margin-left:-10px; border: none;">✓</button>
+            <button id = "add-code" style="margin-left:-10px; border: none;">+CODE</button>
+            <button id = "add-md" style="margin-left:-10px; border: none;">+MD</button>
+            <button id = "add-pic" style="margin-left:-10px; border: none;">+PIC</button>
+            {{#if edit}}
+            {{!-- <span class="access">Edit:</span>
+                <button class="settings" id="edit">🖊</button> --}}
+            {{/if}}
 </div>

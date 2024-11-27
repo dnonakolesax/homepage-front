@@ -3,18 +3,6 @@
   background-color: #1e1e1e
 }
 
-button {
-  background-color: #1e1e1e;
-  margin-left: 8px;
-  border: 1px solid lightgreen;
-  width: 35px;
-  height: fit-content;
-  border-radius: 10px;
-  color: lightgreen;
-  cursor: pointer;
-  font-size: 20px;
-  margin-top: 10px  ;
-}
 iframe#webpack-dev-server-client-overlay{display:none!important}
 
 ul {
@@ -27,15 +15,13 @@ ul {
 }
 
 .texting-wrap {
-  display: inline-grid;
-  grid-template-columns: 97.5% 20px;
-  border: 1px solid white;
+  border: 1px solid lightgreen;
   margin-top: 5px;
   height: fit-content;
-  padding: 20px;
+  padding: 5px;
   border-radius: 12px;
   background-color: #1e1e1e;
-  width: 97.5%;
+  width: 98.5%;
 }
 
 .file-by {
@@ -60,12 +46,10 @@ ul {
 }
 
 .coding-wrap{
-  display: inline-grid;
-  grid-template-columns: 97.5% 20px;
-  border: 1px solid white;
-  width: 97.5%;
+  border: 1px solid lightgreen;
+  width: 98.5%;
   height: fit-content;
-  padding: 20px;
+  padding: 5px;
   border-radius: 12px;
   background-color: #1e1e1e;
 }
@@ -89,6 +73,7 @@ ul {
   height: fit-content;
   color: lightgreen;
   cursor: pointer;
+  border: none !important;
 }
 
 
@@ -108,9 +93,10 @@ body {
   overflow-x: hidden; /* Hide scrollbars */
 }
 
-#texting{
+.texting{
   color: white;
-  margin-top: -20px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .blink {
@@ -142,7 +128,6 @@ body {
   list-style-type: "📃";
   cursor: pointer;
   margin-top: 5px;
-  background-color: blue;
   width: fit-content;
 }
 
@@ -161,7 +146,7 @@ body {
   font-variation-settings: normal;
   line-height: 19px;
   color: white;
-  border: 1px solid white;
+  border: 1px solid lightgreen;
   border-radius: 12px;
   height: available;
 }
@@ -212,4 +197,34 @@ body {
   letter-spacing: 0;
   width: fit-content !important;
   visibility: hidden;
+}
+
+
+#create {
+    width: 240px;
+    height: fit-content;
+    border: 1px solid lightgreen;
+    border-radius: 12px;
+    font-family: Consolas, "Courier New", monospace;
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+    display: none;
+    position: absolute;
+    z-index: 9990;
+    background-color: #1e1e1e;
+}
+
+#cfile, #cdir {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#cfile {
+  margin-top: 5px;
+}
+
+#cdir {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

@@ -16,8 +16,9 @@ export class Router {
         window.addEventListener('click', (event) => {
             const target = event.target.getAttribute('href');
             if (target !== null) {
-                event.preventDefault();
-                this.redirect(target);
+               event.preventDefault();
+              window.open(target, '_blank');
+               // this.redirect(target);
             }
         });
 
@@ -36,15 +37,30 @@ export class Router {
      * @param state - состояние (unused)
      */
     redirect(path, state = null) {
-        const renderer = path.replace(/[/0-9]*/g, ''); // удалить лишние цифры если ссылка связана с каким-то id (e.g. id профиля)
+        let renderer = path.replace(/[/0-9]*/g, ''); // удалить лишние цифры если ссылка связана с каким-то id (e.g. id профиля)
+        const pathSplit = path.split('/')
+        if ((pathSplit.length > 1) && (path.split('/')[0] == 'files')) {
+            renderer = 'files'
+            path = path.substr(5)
+        } 
+        if (pathSplit.length == 0) {
+            renderer = 'files'
+            path = path.substr(5)
+        }
         let route = routes[renderer];
         if (!path.startsWith('blob')) {
-            window.history.pushState(state, null, path);
+            //location.href = location.href.split('/')[0] + path
 
             if (route === undefined) {
                 //route = routes.notfound;
             }
 
+            if (renderer == 'files') {
+                window.history.pushState(state, null, new URL("http://192.168.1.70:7676/files" + path));
+                return route.render(path)
+            }
+            
+            window.history.pushState(state, null, new URL("http://192.168.1.70:7676" + path));
             return route.render();
         }
     }
