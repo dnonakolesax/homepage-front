@@ -1,6 +1,9 @@
 //import { restEndpoints, backendUrl } from '@configs/rest_config.js';
 import { Requests } from './requests.js';
 
+//const mainUrl = 'http://192.168.1.70:5004'
+  const mainUrl = 'http://217.144.184.21:5004'
+
 /**
  * Класс запросов к REST API
  * @class
@@ -159,64 +162,58 @@ export class Api extends Requests {
    */
   async compile(code, fname, kernelId) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://192.168.1.70:5004/uzbek';
+    const url = mainUrl + '/uzbek';
     return this.make_request(url, 'POST', {filename: fname, code: code, kernelId: kernelId});
   }
 
   async getCode(filename) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://192.168.1.70:5004/getcode';
+    const url = mainUrl + '/getcode';
     return this.make_request(url, 'POST', {body: filename} );
   }
   async getDirs(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://192.168.1.70:5004/dirs';
+    const url = mainUrl + '/dirs';
     return this.make_request(url, 'POST', {parent} );
   }
 
   async getBlocks(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = 'http://192.168.1.70:5004/blocks';
+    const url = mainUrl + '/blocks';
     return this.make_request(url, 'POST', {parent} );
   }
 
   async getFileBlocks(path) {
-    const url = 'http://192.168.1.70:5004/blocks';
+    const url = mainUrl + '/blocks';
     return this.make_request(url, 'POST', {path} );
   }
 
   async startKernel(id) {
-    const url = 'http://192.168.1.70:5004/kernel'
+    const url = mainUrl + '/kernel'
     return this.make_request(url, 'POST', {id} );
   }
 
   async stopKernel(id) {
-    const url = 'http://192.168.1.70:5004/kernelstop'
+    const url = mainUrl + '/kernelstop'
     return this.make_request(url, 'POST', {id} );
   }
 
   async addBlock(id, order, block, lorder) {
-    const url = 'http://192.168.1.70:5004/addblock'
+    const url = mainUrl + '/addblock'
     return this.make_request(url, 'POST', {"kernelId": id, "newOrder": order, "newBlocks": [block], "newLangs" : lorder} );
   }
   async addFile(id, path, name) {
-    const url = 'http://192.168.1.70:5004/addfile'
+    const url = mainUrl + '/addfile'
     return this.make_request(url, 'POST', {"parentId": id, "name": name, "path": path} );
   }
 
   async auth(login, password) {
-    const url = 'http://192.168.1.70:5004/login'
+    const url = mainUrl + '/login'
     return this.make_request(url, 'POST', {"login": login, "password": password} );
   }
 
   async isAuth() {
-    const url = 'http://192.168.1.70:5004/isauth'
-    return this.make_request(url, 'GET');
-  }
-
-  async abc() {
-    //const endpoint = restEndpoints.getDestination;
-    const url = 'http://192.168.1.70:3333/';
+    const url = mainUrl + '/isauth'
     return this.make_request(url, 'GET');
   }
 }
