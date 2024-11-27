@@ -95,6 +95,35 @@ video {
   width: 350px;
 }
 
+@media (max-width:1060px) {
+  .login-container {
+    width: 650px !important;
+  }
+
+  .input-group input {
+    font-size: 24px !important;
+
+  }
+
+  .input-group label {
+    font-size: 24px !important;
+  }
+
+  .login-form h2 {
+    font-size: 48px !important;
+  }
+
+  .input-group {
+    margin-top: 60px !important;
+
+  }
+
+  .btn {
+    font-size: 32px !important;
+  }
+
+}
+
 .login-form h2 {
   margin-bottom: 20px;
   text-align: center;
@@ -145,7 +174,7 @@ video {
   padding: 10px !important;
   background-color: #007bff;
   color: #fff;
-  font-size: 16px !important;
+  font-size: 16px;
   border: none !important;
   border-radius: 5px !important;
   cursor: pointer !important;
