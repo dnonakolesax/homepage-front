@@ -194,7 +194,7 @@ export class Api extends Requests {
     const url = 'http://192.168.1.70:5004/kernelstop'
     return this.make_request(url, 'POST', {id} );
   }
-  
+
   async addBlock(id, order, block, lorder) {
     const url = 'http://192.168.1.70:5004/addblock'
     return this.make_request(url, 'POST', {"kernelId": id, "newOrder": order, "newBlocks": [block], "newLangs" : lorder} );
@@ -202,6 +202,16 @@ export class Api extends Requests {
   async addFile(id, path, name) {
     const url = 'http://192.168.1.70:5004/addfile'
     return this.make_request(url, 'POST', {"parentId": id, "name": name, "path": path} );
+  }
+
+  async auth(login, password) {
+    const url = 'http://192.168.1.70:5004/login'
+    return this.make_request(url, 'POST', {"login": login, "password": password} );
+  }
+
+  async isAuth() {
+    const url = 'http://192.168.1.70:5004/isauth'
+    return this.make_request(url, 'GET');
   }
 
   async abc() {

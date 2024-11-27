@@ -21,6 +21,9 @@ const login = async () => {
     const rootElement = document.querySelector(ROOT_ELEMENT_ID);
     rootElement.innerHTML = loginTemplate();
 
+    const loadingElement = document.getElementById('loader');
+    loadingElement.style.display = 'none';
+
     const loginBtn = document.getElementById('login-btn');
     loginBtn.addEventListener('click', handleLogin)
 }

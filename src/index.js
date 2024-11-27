@@ -12,7 +12,12 @@ async function init() {
     await navbar();
     let url = ''
     const api  = new Api()
-    api.abc()
+
+    const result = await api.isAuth()
+    if (result.status.code !== 200) {
+        return router.redirect("/login");
+    }
+
     const urlArr = window.location.href.split('/');
     for (let i = 3; i < urlArr.length; i++) {
         if (i !== 3) {
