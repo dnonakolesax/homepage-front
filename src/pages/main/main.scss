@@ -18,7 +18,7 @@ ul {
   border: 1px solid lightgreen;
   margin-top: 5px;
   height: fit-content;
-  padding: 5px;
+  padding: 10px;
   border-radius: 12px;
   background-color: #1e1e1e;
   width: 98.5%;
@@ -89,8 +89,10 @@ ul {
 }
 
 
-body {
+html, body {
   overflow-x: hidden; /* Hide scrollbars */
+  width: 100vw;
+  height: 100vh;
 }
 
 .texting{
@@ -117,7 +119,8 @@ body {
   display: inline-grid;
   gap: 10px;
   width: 100%;
-  grid-template-columns: 15% 85%
+  grid-template-columns: 15% 85%;
+  margin-left: 5px
 }
 
 .code {
@@ -214,6 +217,20 @@ body {
     z-index: 9990;
     background-color: #1e1e1e;
 }
+#edit {
+    width: 240px;
+    height: fit-content;
+    border: 1px solid lightgreen;
+    border-radius: 12px;
+    font-family: Consolas, "Courier New", monospace;
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+    display: none;
+    position: absolute;
+    z-index: 9990;
+    background-color: #1e1e1e;
+}
 
 #cfile, #cdir {
   margin-left: 20px;
@@ -225,6 +242,20 @@ body {
 }
 
 #cdir {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#dfile, #rfile {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#dfile {
+  margin-top: 5px;
+}
+
+#rfile {
   margin-top: 10px;
   margin-bottom: 10px;
 }

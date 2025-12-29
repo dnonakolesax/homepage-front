@@ -49,6 +49,10 @@ export class Router {
             path = path.substr(5)
         }
         let route = routes[renderer];
+        if (route === undefined) {
+            route = routes["404"];
+            return route.render();
+        }
         if (!path.startsWith('blob')) {
             //location.href = location.href.split('/')[0] + path
 
@@ -61,7 +65,7 @@ export class Router {
                 return route.render(path)
             }
 
-            window.history.pushState(state, null, new URL(loc+ path));
+            window.history.pushState(state, null, new URL(loc+ "/" + path));
             return route.render();
         }
     }

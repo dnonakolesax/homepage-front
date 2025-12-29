@@ -1,0 +1,73 @@
+<div class="dos-page" id="session">
+  <header class="dos-header">
+    <div class="dos-title">
+      NOTED :: АКТИВНЫЕ СЕСИИ
+    </div>
+  </header>
+
+  <main class="dos-main">
+    {{#if devices.length}}
+    {{#each devices}}
+    <section class="dos-block {{#if current}}is-current{{/if}}">
+      <div class="dos-block-title">
+        {{os}}{{#if osVersion}} {{osVersion}}{{/if}} :: {{device}}
+        {{#if current}} <span class="badge">ТЕКУЩАЯ СЕССИЯ</span> {{/if}}
+      </div>
+
+      <div class="dos-kv">
+        <div class="kv-row"><span class="k">ПОСЛЕДНИЙ ДОСТУП</span><span class="v">{{lastAccess}}</span></div>
+        <div class="kv-row"><span class="k">СЕССИИ</span><span class="v">{{sessions.length}}</span></div>
+      </div>
+
+      <div class="dos-table">
+        <div class="dos-tr dos-th">
+          <div class="dos-td col-id">ID СЕССИИ</div>
+          <div class="dos-td col-ip">IP</div>
+          <div class="dos-td col-browser">БРАУЗЕР</div>
+          <div class="dos-td col-start">ВХОД</div>
+          <div class="dos-td col-last">ПОСЛЕДНИЙ ДОСТУП</div>
+          <div class="dos-td col-exp">ИСТЕКАЕТ</div>
+          <div class="dos-td col-act">ДЕЙСТВИЯ</div>
+        </div>
+
+        {{#each sessions}}
+        <div class="dos-tr {{#if current}}is-current{{/if}}">
+          <div class="dos-td col-id" data-label="SESSION ID">
+            <span class="mono">{{id}}</span>
+            {{#if current}} <span class="badge">ТЕКУЩАЯ</span>{{/if}}
+          </div>
+
+          <div class="dos-td col-ip" data-label="IP">
+            <span class="mono">{{ipAddress}}</span>
+          </div>
+
+          <div class="dos-td col-browser" data-label="BROWSER">
+            <span class="mono">{{browser}}</span>
+          </div>
+
+          <div class="dos-td col-start" data-label="STARTED">{{started}}</div>
+          <div class="dos-td col-last" data-label="LAST">{{lastAccess}}</div>
+          <div class="dos-td col-exp" data-label="EXPIRES">{{expires}}</div>
+
+          <div class="dos-td col-act" data-label="ACTION">
+            {{#if current}}
+            <span class="muted">текущая</span>
+            {{else}}
+            <button class="dos-btn danger" type="button" data-revoke-session="{{id}}">
+              ВЫХОД
+            </button>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+    {{/each}}
+    {{else}}
+    <section class="dos-block">
+      <div class="dos-block-title">NO SESSIONS FOUND</div>
+      <div class="dos-text muted">The API returned an empty list.</div>
+    </section>
+    {{/if}}
+  </main>
+</div>

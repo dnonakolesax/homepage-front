@@ -47,7 +47,6 @@ ul {
   display: inline-grid;
   grid-template-columns: 97.5% 20px;
   border: 1px solid lightgreen;
-  margin-top: 5px;
   height: fit-content;
   padding: 20px;
   border-radius: 12px;
@@ -117,7 +116,7 @@ body {
 
 .texting{
   color: white;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 
@@ -149,8 +148,11 @@ body {
   list-style-type: "📃";
   cursor: pointer;
   margin-top: 5px;
-  background-color: blue;
   width: fit-content;
+}
+
+.selected-goifile{
+  background-color: blue;
 }
 
 .dir {

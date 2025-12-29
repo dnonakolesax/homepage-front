@@ -1,8 +1,8 @@
 //import { restEndpoints, backendUrl } from '@configs/rest_config.js';
 import { Requests } from './requests.js';
 
-//const mainUrl = 'http://192.168.1.70:5004'
-  const mainUrl = 'http://217.144.184.21:5004'
+const mainUrl = 'http://127.0.0.1:20596/api/v1'
+ // const mainUrl = 'http://217.144.184.21:5004'
 
 /**
  * Класс запросов к REST API
@@ -156,64 +156,94 @@ export class Api extends Requests {
   //   return this.make_request(url, endpoint.method, {cargo_id, new_shipment_id, old_shipment_id, cargo_amount, cargo_volume});
   // }
 
-  /**
-   * compile
-   * @returns {Promise<{data: *, status: number}|{data: null, status: number}>} - результат запроса и статус
-   */
-  async compile(code, fname, kernelId) {
-    //const endpoint = restEndpoints.getDestination;
-    const url = mainUrl + '/uzbek';
-    return this.make_request(url, 'POST', {filename: fname, code: code, kernelId: kernelId});
-  }
 
   async getCode(filename) {
     //const endpoint = restEndpoints.getDestination;
-    const url = mainUrl + '/getcode';
+    const url = mainUrl + '/fm/getcode';
     return this.make_request(url, 'POST', {body: filename} );
   }
   async getDirs(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = mainUrl + '/dirs';
-    return this.make_request(url, 'POST', {parent} );
+    const url = mainUrl + '/fm/dirs/' + parent;
+    return this.make_request(url, 'GET',);
   }
 
   async getBlocks(parent) {
     //const endpoint = restEndpoints.getDestination;
-    const url = mainUrl + '/blocks';
-    return this.make_request(url, 'POST', {parent} );
+    const url = mainUrl + '/fm/files/' + parent;
+    return this.make_request(url, 'GET');
   }
 
   async getFileBlocks(path) {
-    const url = mainUrl + '/blocks';
-    return this.make_request(url, 'POST', {path} );
+    const url = mainUrl + '/fm/files' + path;
+    return this.make_request(url, 'GET');
   }
 
   async startKernel(id) {
-    const url = mainUrl + '/kernel'
+    const url = mainUrl + '/fm/kernel'
     return this.make_request(url, 'POST', {id} );
   }
 
   async stopKernel(id) {
-    const url = mainUrl + '/kernelstop'
+    const url = mainUrl + '/fm/kernelstop'
     return this.make_request(url, 'POST', {id} );
   }
 
-  async addBlock(id, order, block, lorder) {
-    const url = mainUrl + '/addblock'
-    return this.make_request(url, 'POST', {"kernelId": id, "newOrder": order, "newBlocks": [block], "newLangs" : lorder} );
+
+  async addFile(parent_id, name, is_dir) {
+    if (parent_id === "mainlist") {
+      parent_id = "00000000-0000-0000-0000-000000000000"
+    }
+    const url = mainUrl + '/fm/tree/'
+    return this.make_request(url, 'PUT', {"is_dir": is_dir, "parent_dir": parent_id, "name": name} );
   }
-  async addFile(id, path, name) {
-    const url = mainUrl + '/addfile'
-    return this.make_request(url, 'POST', {"parentId": id, "name": name, "path": path} );
+  
+  async moveFile(id, parent_id) {
+    const url = mainUrl + '/fm/files/move/' + id
+    return this.make_request(url, 'PATCH', {"parent_dir": parent_id} );
+  }
+
+
+  async addBlock(id, prev_id, language) {
+    const url = mainUrl + '/fm/block/' + id;
+    return this.make_request(url, 'POST', {"prev_id": prev_id, "language" : language} );
+  }
+  async moveBlock(id, neighbor, direction, file) {
+    const url = mainUrl + '/fm/block/' + file + '/' + id + '?neighbor=' + neighbor + '&dir=' + direction;
+    return this.make_request(url, 'PATCH');
+  }
+  async deleteBlock(id) {
+    const url = mainUrl + '/fm/block/' + id
+    return this.make_request(url, 'DELETE');
+  }
+  
+
+  async renameFile(id, name) {
+    const url = mainUrl + '/fm/tree/rename/' + id
+    return this.make_request(url, 'PATCH', {"name": name} );
+  }
+  
+
+  async deleteFile(id) {
+    const url = mainUrl + '/fm/files/' + id
+    return this.make_request(url, 'DELETE');
   }
 
   async auth(login, password) {
-    const url = mainUrl + '/login'
+    const url = mainUrl + '/fm/login'
     return this.make_request(url, 'POST', {"login": login, "password": password} );
   }
 
-  async isAuth() {
-    const url = mainUrl + '/isauth'
+  async self() {
+    const url = mainUrl + '/iam/user/self'
     return this.make_request(url, 'GET');
+  }
+  async getSessions() {
+    const url = mainUrl + '/iam/session'
+    return this.make_request(url, 'GET');
+  }
+  async revokeSession(sessionId) {
+    const url = mainUrl + '/iam/session/' + sessionId
+    return this.make_request(url, 'DELETE');
   }
 }

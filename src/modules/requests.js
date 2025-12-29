@@ -45,7 +45,7 @@ export class Requests {
       }
       return {
         status: response.status,
-        data: null,
+        error: null,
       };
     }
   }

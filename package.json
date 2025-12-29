@@ -5,7 +5,8 @@
   "main": "/index_bundle.js",
   "scripts": {
     "test": "npm test",
-    "start": "webpack serve --mode development --host 0.0.0.0"
+    "start": "webpack serve --mode=production --host 0.0.0.0",
+    "start-dev": "webpack serve --mode=development --host 0.0.0.0"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "@automerge/automerge": "^3.2.1",
+    "automerge-wasm": "^0.1.6",
     "babel-loader": "^9.2.1",
     "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.2.0",

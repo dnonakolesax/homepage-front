@@ -26,7 +26,7 @@ module.exports = [
                         },
                     ],
                 },
-                {test: /\.svg/, type: 'asset/inline'},
+                { test: /\.svg/, type: 'asset/inline' },
                 {
                     test: /\.mp4$/,
                     use: [
@@ -117,8 +117,12 @@ module.exports = [
             }
         },
         plugins: [
-            new HtmlWebpackPlugin({template: './index.html'}),
-            new FaviconsWebpackPlugin('../favicon.ico'),
+            new HtmlWebpackPlugin({
+                template: './index.html',
+                 favicon: './misc/favicon.ico',
+            }),
+
+            //new FaviconsWebpackPlugin('./misc/favicon.ico'),
             new MonacoWebpackPlugin()
         ],
     },

@@ -1,7 +1,38 @@
-<span>NOTED</span>
-<span class="footer-user">
-        {{#if auth}}
-        <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-ft">
-        <span class="footer-nick">domnakolesax</span>
-            {{/if}}
-</span>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-brand">NOTED</div>
+
+    <div class="navbar-right">
+      {{#if username}}
+        <div class="user-menu" data-user-menu>
+          <button
+            class="user-button"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            title="Меню пользователя"
+          >
+            <span class="footer-nick">{{username}}</span>
+            <span class="caret" aria-hidden="true">▾</span>
+          </button>
+
+          <div class="dropdown" role="menu">
+            <a class="dropdown-item" role="menuitem" href="/sessions">Список активных сессий</a>
+
+            <!-- Вариант 1: просто ссылка -->
+            <a class="dropdown-item danger" role="menuitem" href="/api/v1/openid-connect/logout">Выход из аккаунта</a>
+
+            <!-- Вариант 2 (если нужен POST logout): кнопка + JS (ниже оставил обработчик)
+            <button class="dropdown-item danger" role="menuitem" type="button" data-action="logout">
+              Выход из аккаунта
+            </button>
+            -->
+          </div>
+        </div>
+      {{else}}
+        <!-- redirectTo желательно прокинуть с бэка: текущий URL <a class="login-button" href="/auth/login?redirect={{redirectTo}}">Войти</a>-->
+        <a class="login-button" href="/api/v1/openid-connect/auth">Войти</a>
+      {{/if}}
+    </div>
+  </div>
+</nav>

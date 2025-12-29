@@ -1,31 +1,126 @@
-.footer-user {
-  display: flex;
-  justify-content: right;
-  font-size: 20px;
-  margin-right: 20px;
-  margin-top: -38px;
-}
-
-.footer-nick {
-  margin-left: 10px;
-  margin-top: 3px;
-  text-decoration: underline;
-}
-
 .navbar {
   font-family: Consolas, "Courier New", monospace;
   font-weight: normal;
-  font-size: 3.2vh;
   background-color: blue;
   width: 100%;
   color: white;
-  text-align: center;
-  height: 4vh;
   border: 1px solid black;
+
+  /* vh обычно дергается на разных экранах; стабильнее фикс/рем */
+  height: 53px;
+  display: flex;
+  align-items: center;
 }
 
-.ava-ft {
-  height: 30px;
-  border: 0 solid;
-  border-radius: 12px;
+.navbar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* центрируем бренд */
+  position: relative;      /* чтобы правый блок можно было прижать */
+  padding: 0 16px;
+}
+
+.navbar-brand {
+  font-size: 43px !important;
+  line-height: 1;
+  user-select: none;
+}
+
+.navbar-right {
+  position: absolute;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Ник (как у тебя было) */
+.footer-nick {
+  text-decoration: underline;
+  margin: 0;
+}
+
+/* Кнопка входа */
+.login-button {
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.login-button:hover {
+  border-color: white;
+}
+
+/* Меню пользователя */
+.user-menu {
+  position: relative;
+}
+
+.user-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.user-button:hover {
+  border-color: white;
+}
+
+.caret {
+  font-size: 12px;
+  transform: translateY(1px);
+}
+
+/* Выпадашка */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: #0b0b0b;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+
+  display: none;
+  z-index: 1000;
+}
+
+.user-menu.open .dropdown {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+
+  padding: 10px 10px;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.dropdown-item.danger {
+  color: #ffb3b3;
 }

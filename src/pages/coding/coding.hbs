@@ -1,16 +1,27 @@
 <div class="file-by">
-            {{this.fname}} by <span class="nickname">
-            <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-au">{{this.nickname}}</span>;
-            <span class="access">Access: rwx; Access settings:</span>
-            <button>⚙</button>
-            <span class="access">Start kernel:</span>
-            <button id = "start-kernel" class="" style="border: none; margin-left: -5px; margin-top -10px;" >▷</button>
-            <button id = "kernel-started" style="display: none; margin-left:-10px; border: none;">✓</button>
-            <button id = "add-code" style="margin-left:-10px; border: none;">+CODE</button>
-            <button id = "add-md" style="margin-left:-10px; border: none;">+MD</button>
-            <button id = "add-pic" style="margin-left:-10px; border: none;">+PIC</button>
-            {{#if edit}}
-            {{!-- <span class="access">Edit:</span>
-                <button class="settings" id="edit">🖊</button> --}}
-            {{/if}}
+    {{this.fname}} by <span class="nickname">
+        <img src="https://avatars.githubusercontent.com/u/90285641?v=4" class="ava-au">{{this.nickname}}</span>;
+    <span class="access">access: {{access}};
+        {{#if owner}}
+        Access settings:
+        {{/if}}
+    </span>
+    {{#if owner}}
+    <button>⚙</button>
+    {{/if}}
+
+    {{#if run}}
+    <span class="access">Start kernel:</span>
+    <button id="start-kernel" class="" style="border: none; margin-left: -5px; margin-top -10px;">▷</button>
+    <button id="kernel-started" style="display: none; margin-left:-10px; border: none;">✓</button>
+    {{/if}}
+    {{#if write}}
+    <button id="add-code" style="margin-left:-10px; border: none;">+CODE</button>
+    <button id="add-md" style="margin-left:-10px; border: none;">+MD</button>
+    <button id="add-pic" style="margin-left:-10px; border: none;">+PIC</button>
+    {{/if}}
+    {{#if edit}}
+    {{!-- <span class="access">Edit:</span>
+    <button class="settings" id="edit">🖊</button> --}}
+    {{/if}}
 </div>

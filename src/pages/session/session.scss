@@ -1,0 +1,312 @@
+:root{
+  --bg: #1e1e1e;
+  --fg: #d6d6d6;
+  --muted: #9aa0a6;
+  --frame: #3a3a3a;
+  --frame2: #2a2a2a;
+  --accent: #7CFC00;  /* “зелёный терминал” */
+  --danger: #ff5f5f;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.dos-page{
+  max-width: min(1800px, 96vw); /* было 1100px — слишком узко для таблицы */
+  margin: 18px auto;
+  padding: 0 16px 24px;
+}
+
+.dos-header{
+  border: 1px solid var(--frame);
+  background: #151515;
+  padding: 12px 12px 10px;
+  box-shadow: 0 0 0 1px #000 inset;
+}
+
+.dos-title{
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+}
+
+.dos-subtitle{
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dos-main{
+  margin-top: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.dos-block{
+  border: 1px solid var(--frame);
+  background: #171717;
+  box-shadow: 0 0 0 1px #000 inset;
+  padding: 12px;
+}
+
+.dos-block.is-current{
+  border-color: rgba(124,252,0,0.55);
+}
+
+.dos-block-title{
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge{
+  display: inline-block;
+  border: 1px solid rgba(124,252,0,0.6);
+  padding: 1px 6px;
+  border-radius: 0;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.dos-kv{
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.kv-row{
+  display: flex;
+  gap: 10px;
+}
+
+.kv-row .k{
+  color: var(--muted);
+  min-width: 120px;
+}
+
+.kv-row .v{
+  color: var(--fg);
+}
+
+.dos-table{
+  border: 1px solid var(--frame2);
+  background: #121212;
+}
+
+.dos-tr{
+  display: grid;
+  grid-template-columns:
+    minmax(320px, 2.2fr)
+    minmax(120px, 0.9fr)
+    minmax(200px, 1.2fr)
+    minmax(180px, 1.0fr)
+    minmax(180px, 1.0fr)
+    minmax(180px, 1.0fr)
+    minmax(140px, 0.8fr);
+  border-top: 1px solid var(--frame2);
+}
+
+.col-act{
+  display: flex;
+  justify-content: center;  /* terminate по центру */
+  align-items: center;
+}
+
+.dos-th .col-act{
+  justify-content: center; /* заголовок ACTION тоже центр */
+}
+
+.dos-tr:first-child{
+  border-top: none;
+}
+
+.dos-th{
+  background: #0f0f0f;
+  color: var(--muted);
+}
+/* базово: можно оставить ellipsis для длинных текстов */
+.dos-td{
+  padding: 10px 10px;
+  border-left: 1px solid var(--frame2);
+  font-size: 12px;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* даты всегда показываем полностью */
+.col-start, .col-last, .col-exp{
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap; /* одна строка */
+  font-variant-numeric: tabular-nums;
+}
+
+/* если вдруг всё равно тесно — разрешим перенос на 2 строки */
+@media (max-width: 1200px){
+  .col-start, .col-last, .col-exp{
+    white-space: normal;
+  }
+}
+
+.dos-td:first-child{
+  border-left: none;
+}
+
+.dos-tr.is-current{
+  background: rgba(124,252,0,0.06);
+}
+
+.dos-subrow{
+  background: #0f0f0f;
+}
+
+.clients-line{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.clients-line .k{
+  color: var(--muted);
+}
+
+.client-pill{
+  border: 1px solid var(--frame);
+  padding: 2px 6px;
+  color: var(--fg);
+}
+
+.mono{
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.muted{
+  color: var(--muted);
+}
+
+.dos-btn{
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  padding: 6px 8px;
+  border: 1px solid var(--frame);
+  background: #1a1a1a;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.dos-btn:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dos-btn:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+
+.dos-btn.danger{
+  border-color: rgba(255,95,95,0.6);
+}
+
+.dos-btn.danger:hover{
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.dos-footer{
+  border: 1px dashed var(--frame);
+  padding: 10px 12px;
+  background: #141414;
+}
+
+.dos-link{
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.dos-link:hover{
+  text-decoration: none;
+}
+
+/* адаптив — в узких экранах таблица будет горизонтально скроллиться */
+@media (max-width: 920px){
+  .dos-table{
+    overflow-x: auto;
+  }
+  .dos-tr{
+    min-width: 980px;
+  }
+}
+
+@media (max-width: 700px){
+  /* убираем “шапку таблицы” */
+  .dos-th{
+    display: none;
+  }
+
+  /* строки делаем карточками */
+  .dos-table{
+    border: none;
+    background: transparent;
+  }
+
+  .dos-tr{
+    display: block;
+    border: 1px solid var(--frame2);
+    background: #121212;
+    margin: 10px 0;
+  }
+
+  .dos-td{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    white-space: normal;     /* на мобиле пусть переносится */
+    overflow: visible;
+    text-overflow: clip;
+    border-left: none;
+    border-top: 1px solid var(--frame2);
+  }
+
+  .dos-td:first-child{
+    border-top: none;
+  }
+
+  /* слева “лейбл”, справа значение */
+  .dos-td::before{
+    content: attr(data-label);
+    color: var(--muted);
+    min-width: 92px;
+    flex: 0 0 92px;
+  }
+
+  .col-act{
+    justify-content: flex-start; /* на мобиле логичнее слева */
+  }
+
+  .dos-btn{
+    width: auto;
+  }
+
+  /* clients subrow оставим нормальным блоком */
+  .dos-subrow .dos-td::before{
+    content: "";
+    min-width: 0;
+    flex: 0 0 auto;
+  }
+}
