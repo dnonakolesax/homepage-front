@@ -5,14 +5,14 @@ import { Api } from "@modules/api";
 
 const navbar = async () => {
     const api = new Api();
-    //const userRes = await api.self();
+    const userRes = await api.self();
     const navbarEl = document.getElementById('navbar');
 
-   // if (userRes.status !== 200) {
+   if (userRes.status !== 200) {
         navbarEl.innerHTML = navbarTemplate({ auth: false });
-    //} else {
-      //  navbarEl.innerHTML = navbarTemplate({ auth: true, username: userRes.data.login });
-    //}
+    } else {
+       navbarEl.innerHTML = navbarTemplate({ auth: true, username: userRes.data.login });
+    }
 
     const menu = document.querySelector("[data-user-menu]");
     if (!menu) return;

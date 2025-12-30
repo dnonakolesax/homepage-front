@@ -12,7 +12,8 @@ module.exports = [
         devServer: {
             port: 7676,
             historyApiFallback: true,
-            hot: true,
+            hot: false,
+            webSocketServer: false,
         },
         module: {
             exprContextCritical: false,

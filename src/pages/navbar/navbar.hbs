@@ -20,7 +20,7 @@
             <a class="dropdown-item" role="menuitem" href="/sessions">Список активных сессий</a>
 
             <!-- Вариант 1: просто ссылка -->
-            <a class="dropdown-item danger" role="menuitem" href="/api/v1/openid-connect/logout">Выход из аккаунта</a>
+            <a class="dropdown-item danger" role="menuitem" href="/api/v1/iam/openid-connect/logout">Выход из аккаунта</a>
 
             <!-- Вариант 2 (если нужен POST logout): кнопка + JS (ниже оставил обработчик)
             <button class="dropdown-item danger" role="menuitem" type="button" data-action="logout">
@@ -31,7 +31,7 @@
         </div>
       {{else}}
         <!-- redirectTo желательно прокинуть с бэка: текущий URL <a class="login-button" href="/auth/login?redirect={{redirectTo}}">Войти</a>-->
-        <a class="login-button" href="/api/v1/openid-connect/auth">Войти</a>
+        <a class="login-button" href="/api/v1/iam/openid-connect/auth">Войти</a>
       {{/if}}
     </div>
   </div>

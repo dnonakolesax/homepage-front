@@ -1,8 +1,7 @@
 //import { restEndpoints, backendUrl } from '@configs/rest_config.js';
 import { Requests } from './requests.js';
 
-const mainUrl = 'http://127.0.0.1:20596/api/v1'
- // const mainUrl = 'http://217.144.184.21:5004'
+const mainUrl = 'https://dnk33.com/api/v1'
 
 /**
  * Класс запросов к REST API
@@ -235,7 +234,11 @@ export class Api extends Requests {
   }
 
   async self() {
-    const url = mainUrl + '/iam/user/self'
+    const url = mainUrl + '/iam/users/self'
+    return this.make_request(url, 'GET');
+  }
+  async getUser(id) {
+    const url = mainUrl + '/iam/users/' + id;
     return this.make_request(url, 'GET');
   }
   async getSessions() {

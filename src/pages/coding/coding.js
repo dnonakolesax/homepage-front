@@ -718,10 +718,11 @@ async function addNote(event) {
 }
 
 async function startKernel(event) {
+    //alert("ща падажжи не задеплоил раннер пока");
     event.target.innerHTML = `
         <div id="loader" class="loading"></div>
     `
-    kernel_ws = new WebSocket("ws://127.0.0.1:8800/api/v1/compiler/ws/?kernel-id=" + id);
+    kernel_ws = new WebSocket("wss://dnk33.com/api/v1/compiler/ws/?kernel-id=" + id);
 
     kernel_ws.onopen = () => {
         const kernelStarted = document.getElementById('kernel-started')
@@ -804,10 +805,12 @@ const coding = async (pathStr) => {
     const access = blocks.data.rights;
     const own = blocks.data.rights.includes('o');
     const write = blocks.data.rights.includes('w');
-    //const exec = blocks.data.rights.includes('x');
-    const exec = true;
+    const exec = blocks.data.rights.includes('x');
+    const userOwner = await api.getUser(blocks.data.author);
+    console.log(userOwner);
+    //const exec = true;
     id = pathSplit[pathSplit.length - 1]
-    codingElement.innerHTML = codingTemplate({ nickname: "domnakolesax", edit: true, fname: blocks.data.owner, owner: own, write: write, run: exec, access: access })
+    codingElement.innerHTML = codingTemplate({ nickname: userOwner.login, edit: true, fname: blocks.data.owner, owner: own, write: write, run: exec, access: access })
     await renderBlocks(blocks.data.blocks, write, exec);
     MathJax.typeset()
 

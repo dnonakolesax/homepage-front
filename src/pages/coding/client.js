@@ -72,7 +72,7 @@ export class NotebookClient {
     }
 
     wsUrl() {
-        const url = `ws://127.0.0.1:5004/api/v1/fm/ws?nb=${encodeURIComponent(this.nbID)}`;
+        const url = `wss://dnk33.com/api/v1/fm/ws?nb=${encodeURIComponent(this.nbID)}`;
         return url;
     }
 
