@@ -7,7 +7,7 @@
         {{/if}}
     </span>
     {{#if owner}}
-    <button>⚙</button>
+    <button id="access-settings-button">⚙</button>
     {{/if}}
 
     {{#if run}}
@@ -18,10 +18,100 @@
     {{#if write}}
     <button id="add-code" style="margin-left:-10px; border: none;">+CODE</button>
     <button id="add-md" style="margin-left:-10px; border: none;">+MD</button>
-    <button id="add-pic" style="margin-left:-10px; border: none;">+PIC</button>
     {{/if}}
     {{#if edit}}
     {{!-- <span class="access">Edit:</span>
     <button class="settings" id="edit">🖊</button> --}}
     {{/if}}
+</div>
+
+<div class="dos-overlay" id="access-settings" aria-hidden="true">
+    <div class="dos-modal" role="dialog" aria-modal="true" aria-labelledby="permTitle">
+        <div class="dos-modal-header">
+            <div class="dos-modal-title" id="permTitle">NOTED :: FILE ACL GRANT</div>
+            <button class="dos-modal-close" id="close-acc-settings" type="button" data-close-overlay
+                aria-label="Close">X</button>
+        </div>
+
+        <div class="dos-modal-body">
+            <div class="dos-page">
+                <header class="dos-header">
+                    <div class="dos-title">NOTED :: FILE ACL GRANT</div>
+                </header>
+
+                <main class="dos-main">
+                    <section class="dos-block">
+                        <div class="dos-block-title">[EXISTING GRANTS]</div>
+
+                        <div class="dos-table" id="aclTable">
+                            <div class="dos-tr dos-th">
+                                <div class="dos-td col-uid">USER ID</div>
+                                <div class="dos-td col-perm">PERMS</div>
+                                <div class="dos-td col-act">ACTION</div>
+                            </div>
+                            <div id="acl-list"></div>
+                        </div>
+
+                        <div class="dos-text muted" style="margin-top: 10px;">
+                            TIP: click row to load perms into the form for editing.
+                        </div>
+                    </section>
+
+                    <section class="dos-block">
+                        <div class="dos-block-title">[GRANT PERMISSIONS]</div>
+
+                        <div class="dos-form" data-file-id="{{fileId}}">
+                            <div class="dos-row">
+                                <div class="dos-label">USERNAME</div>
+                                <input class="dos-input" id="usernameInput" type="text" autocomplete="off"
+                                    spellcheck="false" placeholder="type username..." />
+                                <button class="dos-btn" type="button" id="ac-uid-checkbtn">check</button>
+                            </div>
+
+                            <div class="dos-row">
+                                <div class="dos-label">USER ID</div>
+                                <div class="dos-value mono" id="userIdLine">-</div>
+                            </div>
+
+                            <hr class="dos-hr" />
+
+                            <div class="dos-block-title">[PERMISSIONS]</div>
+
+                            <div class="dos-perms">
+                                <label class="dos-check">
+                                    <input type="checkbox" id="permRead" />
+                                    <span class="dos-check-ui"></span>
+                                    <span class="dos-check-text">read</span>
+                                </label>
+
+                                <label class="dos-check">
+                                    <input type="checkbox" id="permWrite" />
+                                    <span class="dos-check-ui"></span>
+                                    <span class="dos-check-text">write</span>
+                                </label>
+
+                                <label class="dos-check">
+                                    <input type="checkbox" id="permExec" />
+                                    <span class="dos-check-ui"></span>
+                                    <span class="dos-check-text">execute</span>
+                                </label>
+                            </div>
+
+                            <div class="dos-actions">
+                                <button class="dos-btn danger" type="button" id="access-apply-btn"
+                                    disabled>apply</button>
+                                <button class="dos-btn danger" type="button" id="access-cancel-btn">cancel</button>
+                            </div>
+
+                        </div>
+
+                        <div class="dos-text muted" style="margin-top: 10px;">
+                            NOTE: username resolve is required before apply.
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+        </div>
+    </div>
 </div>

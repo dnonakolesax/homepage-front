@@ -159,7 +159,7 @@ export class Api extends Requests {
   async getCode(filename) {
     //const endpoint = restEndpoints.getDestination;
     const url = mainUrl + '/fm/getcode';
-    return this.make_request(url, 'POST', {body: filename} );
+    return this.make_request(url, 'POST', { body: filename });
   }
   async getDirs(parent) {
     //const endpoint = restEndpoints.getDestination;
@@ -180,12 +180,12 @@ export class Api extends Requests {
 
   async startKernel(id) {
     const url = mainUrl + '/fm/kernel'
-    return this.make_request(url, 'POST', {id} );
+    return this.make_request(url, 'POST', { id });
   }
 
   async stopKernel(id) {
     const url = mainUrl + '/fm/kernelstop'
-    return this.make_request(url, 'POST', {id} );
+    return this.make_request(url, 'POST', { id });
   }
 
 
@@ -193,35 +193,35 @@ export class Api extends Requests {
     if (parent_id === "mainlist") {
       parent_id = "00000000-0000-0000-0000-000000000000"
     }
-    const url = mainUrl + '/fm/tree/'
-    return this.make_request(url, 'PUT', {"is_dir": is_dir, "parent_dir": parent_id, "name": name} );
+    const url = mainUrl + '/fm/tree/' + parent_id;
+    return this.make_request(url, 'PUT', { "is_dir": is_dir, "parent_dir": parent_id, "name": name });
   }
-  
+
   async moveFile(id, parent_id) {
     const url = mainUrl + '/fm/files/move/' + id
-    return this.make_request(url, 'PATCH', {"parent_dir": parent_id} );
+    return this.make_request(url, 'PATCH', { "parent_dir": parent_id });
   }
 
 
   async addBlock(id, prev_id, language) {
     const url = mainUrl + '/fm/block/' + id;
-    return this.make_request(url, 'POST', {"prev_id": prev_id, "language" : language} );
+    return this.make_request(url, 'POST', { "prev_id": prev_id, "language": language });
   }
   async moveBlock(id, neighbor, direction, file) {
     const url = mainUrl + '/fm/block/' + file + '/' + id + '?neighbor=' + neighbor + '&dir=' + direction;
     return this.make_request(url, 'PATCH');
   }
-  async deleteBlock(id) {
-    const url = mainUrl + '/fm/block/' + id
+  async deleteBlock(fileID, id) {
+    const url = mainUrl + '/fm/block/' + fileID + '/' + id;
     return this.make_request(url, 'DELETE');
   }
-  
+
 
   async renameFile(id, name) {
     const url = mainUrl + '/fm/tree/rename/' + id
-    return this.make_request(url, 'PATCH', {"name": name} );
+    return this.make_request(url, 'PATCH', { "name": name });
   }
-  
+
 
   async deleteFile(id) {
     const url = mainUrl + '/fm/files/' + id
@@ -230,7 +230,7 @@ export class Api extends Requests {
 
   async auth(login, password) {
     const url = mainUrl + '/fm/login'
-    return this.make_request(url, 'POST', {"login": login, "password": password} );
+    return this.make_request(url, 'POST', { "login": login, "password": password });
   }
 
   async self() {
@@ -248,5 +248,31 @@ export class Api extends Requests {
   async revokeSession(sessionId) {
     const url = mainUrl + '/iam/session/' + sessionId
     return this.make_request(url, 'DELETE');
+  }
+
+  async userByName(name) {
+    const url = mainUrl + "/iam/users/name/" + name;
+    return this.make_request(url, 'GET')
+  }
+
+
+  async grantAccess(fileId, userId, access) {
+    const url = mainUrl + "/fm/access" + fileId;
+    return this.make_request(url, 'POST', { "user_id": userId, "access": access });
+
+  }
+  async updateAccess(fileId, userId, access) {
+    const url = mainUrl + "/fm/access" + fileId;
+    return this.make_request(url, 'PUT', { "user_id": userId, "access": access });
+
+  }
+  async revokeAccess(fileId, userId) {
+    const url = mainUrl + "/fm/access" + fileId;
+    return this.make_request(url, 'DELETE', { "user_id": userId });
+
+  }
+  async listAccess(fileId) {
+    const url = mainUrl + "/fm/access" + fileId;
+    return this.make_request(url, 'GET');
   }
 }

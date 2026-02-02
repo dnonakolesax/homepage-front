@@ -95,6 +95,12 @@ async function onCreateFile(e, parent_id) {
 
         const response = await api.addFile(parent_id, result, false)
 
+        
+        if (response.status !== 200) {
+            alert("error creating file")
+            return
+        }
+
         let li = document.createElement('li')
         li.setAttribute("id", response.data.id)
         let cl = 'goifile'
@@ -115,7 +121,11 @@ async function onCreateFile(e, parent_id) {
 
 async function onDeleteFile(e, id) {
     const api = new Api();
-    await api.deleteFile(id);
+    const result = await api.deleteFile(id);
+    if (result.status !== 200) {
+        alert("error deleting file")
+        return
+    }
     let fileEl = document.getElementById(id);
     fileEl.remove();
 }
@@ -131,7 +141,11 @@ async function onRenameFile(e, id) {
         if (oldName.slice(-4) === ".goi") {
             result += ".goi";
         }
-        await api.renameFile(id, result);
+        const result = await api.renameFile(id, result);
+        if (result.status !== 200) {
+            alert("error renaming file")
+            return
+        }
         fileEl.textContent = result;
     }
 }
@@ -207,6 +221,11 @@ const main = async () => {
 
     const api = new Api()
     const dirList = await api.getDirs("00000000-0000-0000-0000-000000000000")
+
+    if (dirList.status === 401) {
+        return window.router.redirest("/api/v1/iam/openid-connect/auth")
+    }
+
     const parentList = document.getElementById("dirlist")
 
     const dirs = dirList.data

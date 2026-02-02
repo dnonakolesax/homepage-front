@@ -36,7 +36,7 @@ export class BlockState {
 }
 
 export class NotebookClient {
-    constructor(nbID) {
+    constructor(nbID, textCallback) {
         this.nbID = nbID;
         this.blockId = null; // активный блок по умолчанию
 
@@ -47,6 +47,7 @@ export class NotebookClient {
         this.doc = Automerge.from({ text: "" });
         this.syncState = Automerge.initSyncState();
         this.isApplyingRemote = false;
+        this.textCallback = textCallback;
 
         this.connectWS();
     }
@@ -86,8 +87,10 @@ export class NotebookClient {
         this.ws = new WebSocket(this.wsUrl());
         this.ws.binaryType = "arraybuffer";
 
+        let connectedOnce = false;
         this.ws.onopen = () => {
             this.setStatus("connected");
+            connectedOnce = true;
             // сообщаем серверу, какой блок сейчас активен
             //this.sendBlockSelect();
             // и запускаем sync для текущего блока
@@ -175,9 +178,13 @@ export class NotebookClient {
         };
 
 
+        let attempt = 1;
         this.ws.onclose = () => {
+            //while (attempt < 5) {
             this.setStatus("reconnecting...");
             setTimeout(() => this.connectWS(), 1000);
+            //    attempt++;
+            //}
         };
 
         this.ws.onerror = (err) => {
@@ -199,19 +206,51 @@ export class NotebookClient {
         }));
     }
 
+    newBlock(blockId, parentId, lang) {
+        this.ws.send(JSON.stringify({
+            kind: "block-add",
+            blockId: blockId,
+            parentId: parentId,
+            lang: lang
+        }));
+    }
+    moveBlock(blockId, parentId) {
+        this.ws.send(JSON.stringify({
+            kind: "block-move",
+            blockId: blockId,
+            parentId: parentId
+        }));
+    }
+    deleteBlock(blockId) {
+        this.ws.send(JSON.stringify({
+            kind: "block-delete",
+            blockId: blockId
+        }));
+    }
+    editBlock(blockId) {
+        this.ws.send(JSON.stringify({
+            kind: "block-edit",
+            blockId: blockId
+        }));
+    }
+    finishedEdit(blockId) {
+        this.ws.send(JSON.stringify({
+            kind: "block-edit-finished",
+            blockId: blockId
+        }));
+    }
+
     handleTextMessage(text) {
-        // Для теста достаточно логировать. Здесь могут приходить:
-        // - block-select от других пользователей
-        // - любые другие текстовые сообщения
         try {
             const msg = JSON.parse(text);
             if (msg.kind === "block-select") {
                 console.log("Другой клиент переключился на блок:", msg.blockId);
+            } else if (msg.kind === "block-add" || msg.kind === "block-move" || msg.kind === "delete-block" 
+                || msg.kind === "block-edit" || msg.kind === "finished-edit"
+            ) {
+                this.textCallback(msg);
             }
-            // добавить мув удаление добавление блоков
-            // при желании можно что-то рисовать в UI
         } catch {
-            // не JSON — игнорируем
         }
     }
 

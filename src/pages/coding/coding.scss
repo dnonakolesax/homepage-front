@@ -514,3 +514,300 @@ body {
   License: see project LICENSE
   Touched: 2021
 */pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#f3f3f3;color:#444}.hljs-comment{color:#697070}.hljs-punctuation,.hljs-tag{color:#444a}.hljs-tag .hljs-attr,.hljs-tag .hljs-name{color:#444}.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-name,.hljs-selector-tag{font-weight:700}.hljs-deletion,.hljs-number,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}.hljs-section,.hljs-title{color:#800;font-weight:700}.hljs-link,.hljs-operator,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#ab5656}.hljs-literal{color:#695}.hljs-addition,.hljs-built_in,.hljs-bullet,.hljs-code{color:#397300}.hljs-meta{color:#1f7199}.hljs-meta .hljs-string{color:#38a}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
+
+
+.dos-title{
+  font-size: clamp(16px, 1.2vw, 20px);
+}
+
+.dos-subtitle{
+  font-size: clamp(11px, 0.9vw, 12px);
+}
+
+.dos-form{
+  display: grid;
+  gap: 10px;
+}
+
+.dos-row{
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.dos-row-status{
+  grid-template-columns: 120px 1fr;
+}
+
+.dos-label{
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.dos-input{
+  width: 100%;
+  background: #101010;
+  color: var(--fg);
+  border: 1px solid var(--frame);
+  padding: 8px 10px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+.dos-input:focus{
+  border-color: rgba(124,252,0,0.7);
+  box-shadow: 0 0 0 1px #000 inset;
+}
+
+.dos-value{
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.dos-status{
+  padding: 8px 10px;
+  border: 1px dashed var(--frame);
+  background: #141414;
+  color: var(--muted);
+}
+
+.dos-status.ok{
+  color: var(--accent);
+  border-color: rgba(124,252,0,0.5);
+}
+
+.dos-status.bad{
+  color: var(--danger);
+  border-color: rgba(255,95,95,0.55);
+}
+
+.dos-status.warn{
+  color: #ffd36e;
+  border-color: rgba(255,211,110,0.45);
+}
+
+.dos-hr{
+  border: none;
+  border-top: 1px solid var(--frame2);
+  margin: 6px 0;
+}
+
+.dos-perms{
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 6px 0 2px;
+}
+
+.dos-check{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--fg);
+}
+
+.dos-check input{
+  display: none;
+}
+
+/* “DOS checkbox” */
+.dos-check-ui{
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--frame);
+  background: #101010;
+  box-shadow: 0 0 0 1px #000 inset;
+  position: relative;
+}
+
+.dos-check input:checked + .dos-check-ui::after{
+  content: "X";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.dos-check-text{
+  font-size: 13px;
+}
+
+.dos-actions{
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/* mobile */
+@media (max-width: 720px){
+  .dos-row{
+    grid-template-columns: 1fr;
+  }
+  .dos-row .dos-label{
+    margin-bottom: -4px;
+  }
+  .dos-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dos-actions .dos-btn{
+    width: 100%;
+  }
+}
+
+/* затемняющий слой */
+.dos-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65); /* затемнение */
+  display: none;
+  z-index: 9999;
+
+  /* центрирование модалки */
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+}
+
+/* открыто */
+.dos-overlay.is-open{
+  display: flex;
+}
+
+/* окно */
+.dos-modal{
+  //width: min(980px, 96vw);
+  max-height: min(90vh, 900px);
+  overflow: auto;
+
+  background: #171717;
+  border: 1px solid var(--frame);
+  box-shadow: 0 0 0 1px #000 inset, 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* шапка */
+.dos-modal-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #151515;
+  border-bottom: 1px solid var(--frame2);
+  padding: 10px 12px;
+}
+
+.dos-modal-title{
+  color: var(--accent);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.dos-modal-close{
+  font-family: Consolas, "Courier New", monospace;
+  border: 1px solid var(--frame);
+  background: #1a1a1a;
+  color: var(--fg);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.dos-modal-close:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* тело */
+.dos-modal-body{
+  padding: 12px;
+}
+
+/* блокировка скролла фона */
+body.modal-open{
+  overflow: hidden;
+}
+
+/* mobile */
+@media (max-width: 720px){
+  .dos-modal{
+    width: 100%;
+    max-height: 92vh;
+  }
+}
+
+/* ACL table columns */
+#aclTable .dos-tr{
+  grid-template-columns:
+    minmax(180px, 1.2fr)
+    minmax(280px, 2.0fr)
+    minmax(120px, 0.9fr)
+    minmax(80px, 0.5fr)
+    minmax(180px, 1.0fr)
+    minmax(160px, 0.8fr);
+}
+
+#aclTable .col-act{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-row{
+  cursor: pointer;
+}
+
+.acl-row:hover{
+  background: rgba(124,252,0,0.06);
+}
+
+.acl-row.is-selected{
+  outline: 1px solid rgba(124,252,0,0.55);
+  background: rgba(124,252,0,0.08);
+}
+
+.acl-pill{
+  display: inline-block;
+  border: 1px solid var(--frame);
+  padding: 1px 6px;
+  margin-right: 6px;
+  color: var(--fg);
+}
+
+.acl-pill.ok{
+  border-color: rgba(124,252,0,0.55);
+  color: var(--accent);
+}
+
+/* mobile: делаем карточный вывод ACL как в сессиях */
+@media (max-width: 720px){
+  #aclTable .dos-th{ display: none; }
+  #aclTable .dos-tr{ display: block; }
+  #aclTable .dos-td{
+    display: flex;
+    gap: 10px;
+    border-left: none;
+    border-top: 1px solid var(--frame2);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+  #aclTable .dos-td:first-child{ border-top: none; }
+  #aclTable .dos-td::before{
+    content: attr(data-label);
+    color: var(--muted);
+    min-width: 92px;
+    flex: 0 0 92px;
+  }
+  #aclTable .col-act{ justify-content: flex-start; }
+}
+
