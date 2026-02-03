@@ -258,12 +258,12 @@ export class Api extends Requests {
 
   async grantAccess(fileId, userId, access) {
     const url = mainUrl + "/fm/access" + fileId;
-    return this.make_request(url, 'POST', { "user_id": userId, "access": access });
+    return this.make_request(url, 'POST', { "user_id": userId, "level": access });
 
   }
   async updateAccess(fileId, userId, access) {
     const url = mainUrl + "/fm/access" + fileId;
-    return this.make_request(url, 'PUT', { "user_id": userId, "access": access });
+    return this.make_request(url, 'PUT', { "user_id": userId, "level": access });
 
   }
   async revokeAccess(fileId, userId) {

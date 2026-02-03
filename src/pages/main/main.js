@@ -207,7 +207,7 @@ async function onFileRmb(e) {
 
 const main = async () => {
     const pathSplit = window.location.href.split('/')
-    console.log(pathSplit)
+    //console.log(pathSplit)
     let pathStr = ''
     const rootElement = document.querySelector(ROOT_ELEMENT_ID);
     rootElement.innerHTML = mainTemplate();
@@ -229,7 +229,7 @@ const main = async () => {
     const parentList = document.getElementById("dirlist")
 
     const dirs = dirList.data
-    console.log(dirs)
+    //console.log(dirs)
     dirs.forEach((dir) => {
         let li = document.createElement('li')
         li.setAttribute("opened", 'n')

@@ -811,3 +811,14 @@ body.modal-open{
   #aclTable .col-act{ justify-content: flex-start; }
 }
 
+.dos-btn{
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  padding: 6px 8px;
+  border: 1px solid var(--frame);
+  background: #1a1a1a;
+  color: var(--fg);
+  
+    margin-left: 0px;
+  cursor: pointer;
+}

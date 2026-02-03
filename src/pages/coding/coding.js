@@ -54,7 +54,7 @@ async function onclick3(e) {
     const tojik2 = document.getElementById(`edit-${attr}`)
     tojik2.style.display = 'inline'
     const texSource = monaco.editor.getEditors()[editorNum].getValue()
-    console.log(texSource)
+    //console.log(texSource)
     const html = await marked.parse(texSource);
     let texting = document.getElementById(`texting-${attr}`);
     texting.innerHTML = html;
@@ -431,7 +431,7 @@ async function renderBlocks(blockList, write, run) {
         }
     }
 
-    console.log(order);
+    //console.log(order);
     for (let i = 0; i < blockList.length; i++) {
         document.getElementById(`up_${blockList[i].id}`)?.addEventListener('click', async (e) => {
             const realIdx = order.indexOf(blockList[i].id);
@@ -468,7 +468,7 @@ async function renderBlocks(blockList, write, run) {
             const tempSwap = order[realIdx];
             order[realIdx] = order[realIdx - 1];
             order[realIdx - 1] = tempSwap;
-            console.log(order);
+            //console.log(order);
         })
         document.getElementById(`down_${blockList[i].id}`)?.addEventListener('click', async (e) => {
             const realIdx = order.indexOf(blockList[i].id);
@@ -505,7 +505,7 @@ async function renderBlocks(blockList, write, run) {
             const tempSwap = order[realIdx];
             order[realIdx] = order[realIdx + 1];
             order[realIdx + 1] = tempSwap;
-            console.log(order);
+            //console.log(order);
         })
     }
     loader.style.visibility = 'none'
@@ -818,7 +818,7 @@ async function addCode(event, lang, blockID = '', parentID = '') {
         const tempSwap = order[realIdx];
         order[realIdx] = order[realIdx - 1];
         order[realIdx - 1] = tempSwap;
-        console.log(order);
+        //console.log(order);
     })
     document.getElementById(`down_${newId}`)?.addEventListener('click', async (e) => {
         const realIdx = order.indexOf(newId);
@@ -855,7 +855,7 @@ async function addCode(event, lang, blockID = '', parentID = '') {
         const tempSwap = order[realIdx];
         order[realIdx] = order[realIdx + 1];
         order[realIdx + 1] = tempSwap;
-        console.log(order);
+        //console.log(order);
     })
 
     tw.setAttribute("editor-id", editorsCount)
@@ -938,7 +938,7 @@ async function textCallback(msg) {
                 const downButton = document.getElementById(`down-${msg.blockID}`);
                 downButton.click();
             } else {
-                console.log("couldnt find parent for move", msg.parentID);
+                //console.log("couldnt find parent for move", msg.parentID);
             }
             break;
         case msg.kind === "delete-block":
@@ -975,7 +975,7 @@ const coding = async (pathStr) => {
     //    const pathSplit = window.location.href.split('/')
     const api = new Api()
 
-    // console.log(pathSplit)
+    // //console.log(pathSplit)
     // let pathStr = ''
     // for (let i = 4; i < pathSplit.length; i++) {
     //     pathStr += '/'
@@ -1009,7 +1009,7 @@ const coding = async (pathStr) => {
     const write = blocks.data.rights.includes('w');
     const exec = blocks.data.rights.includes('x');
     const userOwner = await api.getUser(blocks.data.author);
-    console.log(userOwner);
+    //console.log(userOwner);
     let nickname = "one-of-our-users";
 
     if (userOwner.status === 200) {
@@ -1127,12 +1127,24 @@ const coding = async (pathStr) => {
     const selectedFile = document.getElementById(pathSplit[1]);
     selectedFile.classList.add("selected-goifile");
 
-    const overlay = document.getElementById("access-settings");
+    if (own) {
+        const overlay = document.getElementById("access-settings");
 
-    let openedFirst = true;
+        let openedFirst = true;
 
-    async function openOverlay() {
-        if (openedFirst) {
+        async function openOverlay() {
+
+            overlay.classList.add("is-open");
+            overlay.setAttribute("aria-hidden", "false");
+            document.body.classList.add("modal-open");
+
+            const firstFocusable =
+                overlay.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+            firstFocusable?.focus();
+
+            if (!openedFirst) {
+                return
+            }
             const aclList = document.getElementById("acl-list");
 
             aclList.innerHTML = ``;
@@ -1144,25 +1156,34 @@ const coding = async (pathStr) => {
                 return
             }
 
+            let edit = false;
+            const applyChangesButton = document.getElementById("access-apply-btn");
+
+
+            const checkR = document.getElementById("permRead");
+            const checkW = document.getElementById("permWrite");
+            const checkX = document.getElementById("permExec");
             for (let i = 0; i < aclListResponse.data.length; i++) {
                 const userId = aclListResponse.data[i].user_id;
-                const access = aclListResponse.data[i].access;
+                const access = aclListResponse.data[i].level;
 
                 aclList.innerHTML += `
                 <div class="dos-tr acl-row" id="acl-entry-${userId}" data-acl-user-id="${userId}">
                                     <div class="dos-td col-uid mono" data-label="USER ID">${userId}</div>
 
-                                    <div class="dos-td col-perm" data-label="PERMS">
+                                    <div class="dos-td col-perm" data-label="PERMS" id=access-level-${userId}>
                                         ${access}
                                     </div>
 
                                     <div class="dos-td col-act" data-label="ACTION">
-                                        <button class="dos-btn" type="button" data-acl-edit="${userId}">edit</button>
+                                        <button class="dos-btn" type="button" id="acl-edit-${userId}">edit</button>
                                         <button class="dos-btn danger" type="button" id="revoke-${userId}"
                                             data-acl-revoke="${userId}">revoke</button>
                                     </div>
                 </div>
                     `;
+
+                const entry = document.getElementById(`acl-entry-${userId}`);
                 const revokeEL = document.getElementById(`revoke-${userId}`);
                 revokeEL.addEventListener('click', async () => {
                     const removeAcResult = await api.revokeAccess(pathStr, userId);
@@ -1171,124 +1192,190 @@ const coding = async (pathStr) => {
                         alert("error");
                         return;
                     }
-                    const entry = document.getElementById(`acl-entry-${userId}`);
                     entry.remove();
-                })
+                });
+                const aclEdit = document.getElementById(`acl-edit-${userId}`);
+                aclEdit.addEventListener('click', async () => {
+                    const currAccess = document.getElementById(`access-level-${userId}`).textContent.trim();
+
+                    if (currAccess[0] === 'r') {
+                        checkR.checked = true
+                    } else {
+                        checkR.checked = false
+                    }
+                    if (currAccess[1] === 'w') {
+                        checkW.checked = true
+                    } else {
+                        checkW.checked = false
+                    }
+                    if (currAccess[2] === 'x') {
+                        checkX.checked = true
+                    } else {
+                        checkX.checked = false
+                    }
+
+                    edit = true;
+                    const idLine = document.getElementById("userIdLine");
+                    idLine.textContent = userId;
+                    applyChangesButton.disabled = false;
+                });
             }
             openedFirst = false;
-        }
-        overlay.classList.add("is-open");
-        overlay.setAttribute("aria-hidden", "false");
-        document.body.classList.add("modal-open");
-
-        const firstFocusable =
-            overlay.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
-        firstFocusable?.focus();
 
 
-        const checkLoginButton = document.getElementById("ac-uid-checkbtn");
+            const checkLoginButton = document.getElementById("ac-uid-checkbtn");
 
-        checkLoginButton.addEventListener('click', async () => {
-            const username = document.getElementById("usernameInput").value;
-            alert(username)
+            checkLoginButton.addEventListener('click', async () => {
+                const username = document.getElementById("usernameInput").value;
 
-            const unameResult = await api.userByName(username);
+                const unameResult = await api.userByName(username);
 
-            if (unameResult.status !== 200) {
-                alert("error: no such user")
-                return;
-            }
-
-            const idLine = document.getElementById("userIdLine");
-
-            idLine.textContent = unameResult.login;
-        })
-
-        const applyChangesButton = document.getElementById("access-apply-btn");
-
-        const checkR = document.getElementById("permRead");
-        const checkW = document.getElementById("permWrite");
-        const checkX = document.getElementById("permExec");
-
-        applyChangesButton.addEventListener('click', async () => {
-            const idLine = document.getElementById("userIdLine");
-            const userID = idLine.textContent;
-            let access = "";
-            if (checkR.checked) {
-                access += "r"
-            } else {
-                access += "-"
-            }
-            if (checkW.checked) {
-                if (access[0] == "-") {
-                    alert("нельзя сделать write без read")
+                if (unameResult.status !== 200) {
+                    alert("error: no such user")
+                    applyChangesButton.disabled = true;
+                    return;
                 }
-                access += "w"
-            } else {
-                access += "-"
-            }
-            if (checkX.checked) {
-                if (access[0] == "-") {
-                    alert("нельзя сделать execute без read")
+
+                const idLine = document.getElementById("userIdLine");
+
+                //console.log(unameResult.data.user_id);
+                idLine.textContent = unameResult.data.user_id;
+                applyChangesButton.disabled = false;
+            })
+
+
+            applyChangesButton.addEventListener('click', async () => {
+                const idLine = document.getElementById("userIdLine");
+                const userID = idLine.textContent;
+
+                const aclList = document.getElementById("acl-list");
+                let access = "";
+                if (checkR.checked) {
+                    access += "r"
+                } else {
+                    access += "-"
                 }
-                access += "x"
-            } else {
-                access += "-"
-            }
+                if (checkW.checked) {
+                    if (access[0] == "-") {
+                        alert("нельзя сделать write без read")
+                    }
+                    access += "w"
+                } else {
+                    access += "-"
+                }
+                if (checkX.checked) {
+                    if (access[0] == "-") {
+                        alert("нельзя сделать execute без read")
+                    }
+                    access += "x"
+                } else {
+                    access += "-"
+                }
 
-            const applyResult = await api.grantAccess(pathStr, userID, access);
+                let applyResult;
+                if (edit) {
+                    applyResult = await api.updateAccess(pathStr, userID, access);
+                    edit = false;
 
-            if (applyResult.status !== 200) {
-                alert("ошибка!")
-            } else {
-                aclList.innerHTML += `
+                    if (applyResult.status !== 200) {
+                        alert("ошибка!")
+                    } else {
+                        document.getElementById(`access-level-${userID}`).textContent = access;
+                    }
+                    return
+                } else {
+                    applyResult = await api.grantAccess(pathStr, userID, access);
+                }
+
+                if (applyResult.status !== 200) {
+                    alert("ошибка!")
+                } else {
+                    aclList.innerHTML += `
                 <div class="dos-tr acl-row" id="acl-entry-${userID}" data-acl-user-id="${userID}">
                                     <div class="dos-td col-uid mono" data-label="USER ID">${userID}</div>
 
-                                    <div class="dos-td col-perm" data-label="PERMS">
+                                    <div class="dos-td col-perm" data-label="PERMS" id="access-level-${userID}">
                                         ${access}
                                     </div>
 
                                     <div class="dos-td col-act" data-label="ACTION">
-                                        <button class="dos-btn" type="button" data-acl-edit="${userID}">edit</button>
+                                        <button class="dos-btn" type="button" id="acl-edit-${userID}">edit</button>
                                         <button class="dos-btn danger" type="button" id="revoke-${userID}"
                                             data-acl-revoke="${userID}">revoke</button>
                                     </div>
                 </div>
                     `;
-            }
-        })
-    }
 
-    function closeOverlay() {
-        overlay.classList.remove("is-open");
-        overlay.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("modal-open");
-    }
+                    const revokeEL = document.getElementById(`revoke-${userID}`);
+                    revokeEL.addEventListener('click', async () => {
+                        const removeAcResult = await api.revokeAccess(pathStr, userID);
 
-    const openAccessButton = document.getElementById("access-settings-button");
-    const closeAccessButton = document.getElementById("access-cancel-btn");
-    const closeAccessButton2 = document.getElementById("close-acc-settings");
+                        if (removeAcResult !== 200) {
+                            alert("error");
+                            return;
+                        }
+                        entry.remove();
+                    });
+                    const aclEdit = document.getElementById(`acl-edit-${userID}`);
+                    aclEdit.addEventListener('click', async () => {
 
-    openAccessButton.addEventListener("click", (e) => {
-        openOverlay();
-    });
-    closeAccessButton.addEventListener("click", (e) => {
-        closeOverlay();
-    });
-    closeAccessButton2.addEventListener("click", (e) => {
-        closeOverlay();
-    });
+                        const currAccess = document.getElementById(`access-level-${userID}`).textContent;
 
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) closeOverlay();
-    });
+                        if (currAccess[0] === 'r') {
+                            checkR.checked = true
+                        } else {
+                            checkR.checked = false
+                        }
+                        if (currAccess[1] === 'w') {
+                            checkW.checked = true
+                        } else {
+                            checkW.checked = false
+                        }
+                        if (currAccess[2] === 'x') {
+                            checkX.checked = true
+                        } else {
+                            checkX.checked = false
+                        }
 
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && overlay.classList.contains("is-open")) {
-            closeOverlay();
+                        edit = true;
+                        const idLine = document.getElementById("userIdLine");
+                        idLine.textContent = userID;
+                        applyChangesButton.disabled = false;
+                    });
+                }
+            })
         }
-    });
+
+        function closeOverlay() {
+            overlay.classList.remove("is-open");
+            overlay.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("modal-open");
+        }
+
+        const openAccessButton = document.getElementById("access-settings-button");
+        const closeAccessButton = document.getElementById("access-cancel-btn");
+        const closeAccessButton2 = document.getElementById("close-acc-settings");
+
+        openAccessButton.addEventListener("click", (e) => {
+            openOverlay();
+        });
+        closeAccessButton.addEventListener("click", (e) => {
+            closeOverlay();
+        });
+        closeAccessButton2.addEventListener("click", (e) => {
+            closeOverlay();
+        });
+
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) closeOverlay();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && overlay.classList.contains("is-open")) {
+                closeOverlay();
+            }
+        });
+    }
 
 }
 
