@@ -76,7 +76,11 @@ async function onFileClick(e, did) {
     //     return
     // }
     e.preventDefault()
-    window.router.redirect("files/" + id);
+    
+    const loadingElement = document.getElementById('loader');
+    loadingElement.style.display = '';
+    window.history.pushState({}, "", "/files/" + id);
+    await coding("/"+id);
 }
 
 function uuidv4() {

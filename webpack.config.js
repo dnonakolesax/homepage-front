@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const webpack = require('webpack');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = [
@@ -120,7 +118,7 @@ module.exports = [
         plugins: [
             new HtmlWebpackPlugin({
                 template: './index.html',
-                 favicon: './misc/favicon.ico',
+                favicon: './misc/favicon.ico',
             }),
 
             //new FaviconsWebpackPlugin('./misc/favicon.ico'),

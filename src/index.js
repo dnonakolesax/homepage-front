@@ -1,21 +1,31 @@
-import {Router} from '@modules/router/router';
+import { Router } from '@modules/router/router';
 
 // import reset from '@components/Shared/reset.scss';
-import {} from '@partials/roller/roller.scss'
+import { } from '@partials/roller/roller.scss'
 import navbar from "@pages/navbar/navbar";
-import {Api} from "@modules/api";
+import privacy from "@pages/privacy/privacy";
+import { Api } from "@modules/api";
 
 const router = new Router();
 window.router = router;
 
 async function init() {
+    const KEY = "noted_cookie_consent_v1";
+    try {
+        const saved = localStorage.getItem(KEY);
+        if (!saved) privacy();
+    } catch {
+        privacy();
+    }
+
+
     await navbar();
     let url = ''
-    const api  = new Api()
+    const api = new Api()
 
     //const result = await api.isAuth()
     //if (result.status.code !== 200) {
-        //return router.redirect("/login");
+    //return router.redirect("/login");
     //}
 
     const urlArr = window.location.href.split('/');

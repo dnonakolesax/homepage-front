@@ -88,8 +88,13 @@ export class NotebookClient {
         this.ws.binaryType = "arraybuffer";
 
         let connectedOnce = false;
+
+        const connEstablishedEl = document.getElementById("ntd-ws-connection");
+
         this.ws.onopen = () => {
-            this.setStatus("connected");
+            console.log("connected");
+            //alert("open");
+            connEstablishedEl.textContent = "✅";
             connectedOnce = true;
             // сообщаем серверу, какой блок сейчас активен
             //this.sendBlockSelect();
@@ -181,7 +186,8 @@ export class NotebookClient {
         let attempt = 1;
         this.ws.onclose = () => {
             //while (attempt < 5) {
-            this.setStatus("reconnecting...");
+            connEstablishedEl.textContent = "❌";
+            console.log("reconnecting...");
             setTimeout(() => this.connectWS(), 1000);
             //    attempt++;
             //}

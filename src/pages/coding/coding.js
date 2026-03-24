@@ -1019,6 +1019,9 @@ const coding = async (pathStr) => {
     id = pathSplit[pathSplit.length - 1]
     codingElement.innerHTML = codingTemplate({ nickname: nickname, edit: true, fname: blocks.data.owner, owner: own, write: write, run: exec, access: access })
     await renderBlocks(blocks.data.blocks, write, exec);
+
+    const loadingElement = document.getElementById('loader');
+    loadingElement.style.display = 'none';
     MathJax.typeset()
 
 
@@ -1034,6 +1037,8 @@ const coding = async (pathStr) => {
         curr_block_id = '';
 
         nc.ws.onopen = () => {
+            const connEstablishedEl = document.getElementById("ntd-ws-connection");
+            connEstablishedEl.textContent = "✅";
             editors.forEach((editor) => {
                 const blockId = editor_id[editor.getId()];
 
@@ -1123,6 +1128,12 @@ const coding = async (pathStr) => {
         addPicButton?.addEventListener('click', openPic)
     }
 
+
+    const allLis = document.querySelectorAll('li');
+
+    allLis.forEach(li => {
+        li.classList.remove("selected-goifile");
+    })
 
     const selectedFile = document.getElementById(pathSplit[1]);
     selectedFile.classList.add("selected-goifile");
